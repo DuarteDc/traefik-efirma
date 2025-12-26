@@ -5,15 +5,22 @@ services:
     command:
       - "--api.dashboard=true"
       - "--api.insecure=true"
+
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
+
+      # HTTP
       - "--entrypoints.web.address=:80"
+
+      # HTTPS
       - "--entrypoints.websecure.address=:443"
 
+      # Let's Encrypt
       - "--certificatesresolvers.le.acme.email=eduardo.duarte@sspc.gob.mx"
       - "--certificatesresolvers.le.acme.storage=/letsencrypt/acme.json"
       - "--certificatesresolvers.le.acme.httpchallenge.entrypoint=web"
 
+      # Redirect HTTP → HTTPS
       - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
       - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
 
