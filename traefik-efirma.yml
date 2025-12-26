@@ -9,18 +9,17 @@ services:
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
 
-      # HTTP
+      # Entrypoints
       - "--entrypoints.web.address=:80"
-
-      # HTTPS
       - "--entrypoints.websecure.address=:443"
 
-      # Let's Encrypt
+      # ACME HTTP challenge (OBLIGATORIO)
       - "--certificatesresolvers.le.acme.email=eduardo.duarte@sspc.gob.mx"
       - "--certificatesresolvers.le.acme.storage=/letsencrypt/acme.json"
+      - "--certificatesresolvers.le.acme.httpchallenge=true"
       - "--certificatesresolvers.le.acme.httpchallenge.entrypoint=web"
 
-      # Redirect HTTP → HTTPS
+      # Redirect HTTP → HTTPS (DESPUÉS de ACME)
       - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
       - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
 
