@@ -13,23 +13,22 @@ services:
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
 
-      # ACME HTTP challenge (OBLIGATORIO)
-      - "--certificatesresolvers.le.acme.email=eduardo.duarte@sspc.gob.mx"
-      - "--certificatesresolvers.le.acme.storage=/letsencrypt/acme.json"
-      - "--certificatesresolvers.le.acme.httpchallenge=true"
-      - "--certificatesresolvers.le.acme.httpchallenge.entrypoint=web"
+      # - "--certificatesresolvers.le.acme.email=eduardo.duarte@sspc.gob.mx"
+      # - "--certificatesresolvers.le.acme.storage=/letsencrypt/acme.json"
+      # - "--certificatesresolvers.le.acme.httpchallenge=true"
+      # - "--certificatesresolvers.le.acme.httpchallenge.entrypoint=web"
 
-      # Redirect HTTP → HTTPS (DESPUÉS de ACME)
       - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
       - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
-
+      - "--providers.file.filename=/etc/traefik/dynamic.yml"
     ports:
       - "80:80"
       - "443:443"
       - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./letsencrypt:/letsencrypt
+      - ./certs:/certs
+      - ./dynamic.yml:/etc/traefik/dynamic.yml
     networks:
       - traefik
 
